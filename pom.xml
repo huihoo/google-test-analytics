@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -10,61 +11,106 @@
 
   <name>test-analytics</name>
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>has gwt-dnd 3.1.1</id>
-      <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
-    </pluginRepository>
-  </pluginRepositories>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <gwt.version>2.8.2</gwt.version>
+    <gae.version>1.8.8</gae.version>
+    <datanucleus.version>5.2.2</datanucleus.version>
+    <gae.application.version>test</gae.application.version>
+    <gae.port>8080</gae.port>
+    <gwt.style>DETAILED</gwt.style>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.allen-sauer.gwt.dnd</groupId>
       <artifactId>gwt-dnd</artifactId>
-      <version>3.3.3</version>
+      <version>3.3.4</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <version>4.2.2</version>
     </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20080701</version>
+      <version>20190722</version>
     </dependency>
     <dependency>
       <groupId>com.google.inject.extensions</groupId>
       <artifactId>guice-servlet</artifactId>
-      <version>3.0</version>
+      <version>4.2.2</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>19.0</version>
+      <version>28.1-jre</version>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava-gwt</artifactId>
-      <version>19.0</version>
+      <version>28.1-jre</version>
     </dependency>
     <dependency>
       <groupId>javax.jdo</groupId>
-      <artifactId>jdo2-api</artifactId>
-      <version>2.3-eb</version>
+      <artifactId>jdo-api</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>javax.jdo</artifactId>
+      <version>3.2.0-m12</version>
+    </dependency>
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.datanucleus</groupId>
+      <artifactId>datanucleus-api-jdo</artifactId>
     </dependency>
 
-    <!-- Google App Engine meta-package -->
+    <!-- Google App Engine API -->
     <dependency>
-      <groupId>net.kindleit</groupId>
-      <artifactId>gae-runtime</artifactId>
-      <version>${gae.version}</version>
-      <type>pom</type>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-api-1.0-sdk</artifactId>
+    </dependency>
+
+    <!-- Google App Engine Runtime Dependencies -->
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-jta_1.1_spec</artifactId>
+      <version>1.1.1</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-jpa_3.0_spec</artifactId>
+      <version>1.1.1</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>javax.transaction</groupId>
-      <artifactId>jta</artifactId>
-      <version>1.1</version>
+      <groupId>com.google.appengine.orm</groupId>
+      <artifactId>datanucleus-appengine</artifactId>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.datanucleus</groupId>
+          <artifactId>datanucleus-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- App Engine Runtime Dependencies -->
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-tools-sdk</artifactId>
+      <version>1.9.77</version>
     </dependency>
 
     <!-- GWT dependencies -->
@@ -83,35 +129,26 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.5</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
-      <version>3.0</version>
+      <version>4.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-
-  <!-- Change appengine Maven plugin version to 1.8.4-maven3.0 if Maven < 3.1 is used --> 
   <build>
     <plugins>
       <plugin>
-        <groupId>com.google.appengine</groupId>
+        <groupId>com.google.cloud.tools</groupId>
         <artifactId>appengine-maven-plugin</artifactId>
-        <version>1.8.4</version>
-        <configuration>
-          <jvmFlags>
-            <jvmFlag>-Xdebug</jvmFlag>
-            <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n</jvmFlag>
-          </jvmFlags>
-        </configuration>
+        <version>2.2.0</version>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-	<version>2.16</version>
+        <version>3.0.0-M4</version>
         <configuration>
           <excludes>
             <exclude>**/client/**/*.java</exclude>
@@ -120,8 +157,8 @@
       </plugin>
       <plugin>
         <groupId>org.datanucleus</groupId>
-        <artifactId>maven-datanucleus-plugin</artifactId>
-        <version>1.1.4</version>
+        <artifactId>datanucleus-maven-plugin</artifactId>
+        <version>5.2.1</version>
         <configuration>
           <mappingIncludes>**/model/*.class</mappingIncludes>
           <verbose>true</verbose>
@@ -130,7 +167,7 @@
         </configuration>
         <executions>
           <execution>
-            <phase>compile</phase>
+            <phase>process-classes</phase>
             <goals>
               <goal>enhance</goal>
             </goals>
@@ -140,31 +177,29 @@
           <dependency>
             <groupId>org.datanucleus</groupId>
             <artifactId>datanucleus-core</artifactId>
-            <version>1.1.5</version>
-            <exclusions>
-              <exclusion>
-                <groupId>javax.transaction</groupId>
-                <artifactId>transaction-api</artifactId>
-              </exclusion>
-            </exclusions>
+            <version>${datanucleus.version}</version>
           </dependency>
           <dependency>
             <groupId>org.datanucleus</groupId>
-            <artifactId>datanucleus-rdbms</artifactId>
-            <version>1.1.5</version>
+            <artifactId>datanucleus-api-jdo</artifactId>
+            <version>${datanucleus.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>javax.jdo</groupId>
+            <artifactId>jdo-api</artifactId>
+            <version>3.1</version>
           </dependency>
           <dependency>
             <groupId>org.datanucleus</groupId>
             <artifactId>datanucleus-enhancer</artifactId>
-            <version>1.1.4</version>
+            <version>3.1.1</version>
           </dependency>
         </dependencies>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.1.1</version>
+        <version>3.2.3</version>
         <configuration>
           <webResources>
             <resource>
@@ -181,23 +216,18 @@
           </webResources>
         </configuration>
       </plugin>
-
-      <!-- Maven GWT plugin: http://mojo.codehaus.org/gwt-maven-plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
-        <version>2.7.0</version>
+        <version>2.8.2</version>
         <configuration>
           <logLevel>INFO</logLevel>
-          <port>${gae.port}</port>
-
+          <port>8080</port>
           <compileTargets>
             <value>com.google.testing.testify.risk.frontend.Sharedcode</value>
             <value>com.google.testing.testify.risk.frontend.clientmodule</value>
           </compileTargets>
-
           <extraJvmArgs>-Xmx512m</extraJvmArgs>
-
           <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
           <runTarget>/index.html</runTarget>
           <style>DETAILED</style>
@@ -216,69 +246,28 @@
           <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava-gwt</artifactId>
-            <version>19.0</version>
+            <version>28.1-jre</version>
           </dependency>
           <dependency>
             <groupId>com.allen-sauer.gwt.dnd</groupId>
             <artifactId>gwt-dnd</artifactId>
-            <version>3.3.3</version>
+            <version>3.3.4</version>
           </dependency>
           <dependency>
             <groupId>com.google.appengine</groupId>
             <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>${gae.version}</version>
+            <version>1.9.77</version>
             <type>pom</type>
           </dependency>
         </dependencies>
       </plugin>
-
-      <!-- Maven-gae-plugin. Type "mvn gae:run" to run project, "mvn gae:deploy" 
-        to upload to GAE. -->
-      <plugin>
-        <groupId>net.kindleit</groupId>
-        <artifactId>maven-gae-plugin</artifactId>
-        <version>0.9.1</version>
-        <dependencies>
-          <dependency>
-            <groupId>net.kindleit</groupId>
-            <artifactId>gae-runtime</artifactId>
-            <version>${gae.version}</version>
-            <type>pom</type>
-          </dependency>
-        </dependencies>
-      </plugin>
-
-      <!-- Upload application to the appspot automatically by executing release:perform -->
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <goals>gae:deploy</goals>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.0</version>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
+        <version>3.8.1</version>
       </plugin>
     </plugins>
   </build>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-    <gwt.version>2.7.0</gwt.version>
-    <gae.version>1.5.4</gae.version>
-    <gae.application.version>test</gae.application.version>
-    <gae.port>8080</gae.port>
-    <gwt.style>DETAILED</gwt.style>
-  </properties>
-
   <profiles>
     <profile>
       <id>integration-build</id>
@@ -301,4 +290,33 @@
       </properties>
     </profile>
   </profiles>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.datanucleus</groupId>
+        <artifactId>datanucleus-core</artifactId>
+        <version>${datanucleus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.datanucleus</groupId>
+        <artifactId>datanucleus-api-jdo</artifactId>
+        <version>${datanucleus.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.appengine.orm</groupId>
+        <artifactId>datanucleus-appengine</artifactId>
+        <version>2.1.2</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-api-1.0-sdk</artifactId>
+        <version>1.9.77</version>
+      </dependency>
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>7.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>
