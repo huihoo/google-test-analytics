@@ -25,7 +25,7 @@
           <gwt:Label ui:styleName="tty-UserBarDivider">|</gwt:Label>
         </gwt:Cell>
         <gwt:Cell verticalAlignment='ALIGN_BOTTOM'>
-          <gwt:Anchor ui:styleName="tty-UserBarItem" href="https://github.com/rodion-goritskov/test-analytics-ng" target="_blank">GitHub Page</gwt:Anchor>
+          <gwt:Anchor ui:styleName="tty-UserBarItem" href="https://github.com/martinschneider/google-test-analytics" target="_blank">GitHub Page</gwt:Anchor>
         </gwt:Cell>
         <gwt:Cell verticalAlignment='ALIGN_BOTTOM'>
           <gwt:Label ui:styleName="tty-UserBarDivider">|</gwt:Label>
